@@ -11,28 +11,28 @@ Jednoduchá hra vytvořená v Python pyGame pro ukázku možností OOP.
    ```
 2. Spusť hru:
 
-```bash
-cd src
-python main.py
-```
+   ```bash
+   cd src
+   python main.py
+   ```
 
 ## ⚙️ Funkce
 
-    •	Dynamické měřítko pro různá rozlišení obrazovky (HD, FullHD, 2K, 4K)
-    •	Plynulá animace balónků a částic
-    •	High score chráněné hash klíčem
-    •	Možnost zapnout:
-    •	Fullscreen
-    •	Antialiasing
-    •	Dark mode
-    •	Uložení nastavení do `settings.json`
+- Dynamické měřítko pro různá rozlišení obrazovky (HD, FullHD, 2K, 4K)
+- Plynulá animace balónků a částic
+- High score chráněné hash klíčem
+- Možnost zapnout:
+   - Fullscreen
+   - Antialiasing
+   - Dark mode
+- Uložení nastavení do `settings.json`
 
 ## 💾 Ukládané soubory
 
-    •	`.highscore` – zakódované skóre
-    •	`settings.json` – uživatelské nastavení
+- `.highscore` – zakódované skóre
+- `settings.json` – uživatelské nastavení
 
 ## 🛠️ Vyžaduje
 
-    •	Python 3.8+
-    •	pygame 2.0+
+- Python 3.8+
+- pygame 2.0+
