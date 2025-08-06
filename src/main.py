@@ -10,7 +10,7 @@ import json
 pygame.init()
 
 # --- Promenne ---
-VERSION = "0.2.1"
+VERSION = "0.3.0"
 RESOLUTIONS = {
     "HD": (1280, 720),
     "FullHD": (1920, 1080),
@@ -20,7 +20,7 @@ RESOLUTIONS = {
 DEFAULT_RES = "FullHD"
 WIDTH, HEIGHT = RESOLUTIONS[DEFAULT_RES]
 FPS = 60
-BALLOON_SPAWN_TIME = 500  # ms
+BALLOON_SPAWN_TIME = 400  # ms
 INITIAL_BALLOON_GROWTH = 0.3
 MAX_LIVES = 5
 FONT = pygame.font.SysFont("arial", 24)
@@ -35,6 +35,21 @@ WHITE = (235, 235, 235)
 BLACK = (30, 30, 30)
 RED = (235, 0, 0)
 GREY = (180, 180, 180)
+
+# --- Zvuky ---
+
+CLICK_SOUND_FILE = "assets/menu-click.mp3"
+if os.path.exists(CLICK_SOUND_FILE):
+    click_sound = pygame.mixer.Sound(CLICK_SOUND_FILE)
+else:
+    click_sound = None
+
+BALLOON_POP_SOUND_FILE = "assets/balloon-pop.mp3"
+if os.path.exists(BALLOON_POP_SOUND_FILE):
+    balloon_pop_sound = pygame.mixer.Sound(BALLOON_POP_SOUND_FILE)
+else:
+    balloon_pop_sound = None
+
 
 # --- Inicializace ---
 dark_mode = False
@@ -163,9 +178,9 @@ class Game:
     # Aktualizace stavu hry – spawn balonku, pohyb partiklu, ztraty zivotu
     def update(self, dt):
         self.spawn_timer += dt
-        if self.spawn_timer >= BALLOON_SPAWN_TIME:
+        if self.spawn_timer >= BALLOON_SPAWN_TIME + random.uniform(0, 800):
             self.spawn_timer = 0
-            if len(self.balloons) < 8:  # max 8 balonku na obrazovce
+            if len(self.balloons) < 10:  # max 10 balonku na obrazovce
                 b = Balloon()
                 b.growth *= self.growth_multiplier
                 self.balloons.append(b)
@@ -175,6 +190,8 @@ class Game:
             if not b.alive:
                 self.balloons.remove(b)
                 self.lives -= 1
+                if balloon_pop_sound:
+                    balloon_pop_sound.play()
                 for _ in range(20):
                     self.particles.append(
                         Particle((b.x, b.y), b.color)
@@ -193,6 +210,19 @@ class Game:
             if b.is_clicked(pos):
                 self.balloons.remove(b)
                 self.score += 1
+                if click_sound:
+                    click_sound.play()
+                # Zkontrolujeme, zda je skore delitelne 100 a prida zivot
+                if self.score % 100 == 0:
+                    self.lives += 1
+                    # Zaskoruje všechny balonky na obrazovce
+                    for balloon in self.balloons[:]:
+                        self.balloons.remove(balloon)
+                        self.score += 1
+                        for _ in range(20):
+                            self.particles.append(
+                                Particle((balloon.x, balloon.y), balloon.color)
+                            )
                 for _ in range(20):
                     self.particles.append(Particle((b.x, b.y), b.color))
                 break
@@ -411,31 +441,52 @@ while True:
         if state == MENU:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 if play_button and play_button.collidepoint(event.pos):
+                    if click_sound:
+                        click_sound.play()
                     game.reset()
                     state = PLAYING
                 elif quit_button and quit_button.collidepoint(event.pos):
+                    if click_sound:
+                        click_sound.play()
                     pygame.quit()
                     sys.exit()
                 elif settings_button and settings_button.collidepoint(event.pos):
+                    if click_sound:
+                        click_sound.play()
                     state = "settings"
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                pygame.quit()
+                sys.exit()
         elif state == PLAYING:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 game.handle_click(event.pos)
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                game.lives = 0
         elif state == SETTINGS:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 for r, btn in res_buttons:
                     if btn.collidepoint(event.pos):
+                        if click_sound:
+                            click_sound.play()
                         res = r
                         WIDTH, HEIGHT = RESOLUTIONS[res]
                         screen = pygame.display.set_mode((WIDTH, HEIGHT), screen_flags)
                 if fs_button.collidepoint(event.pos):
+                    if click_sound:
+                        click_sound.play()
                     screen_flags ^= pygame.FULLSCREEN
                     screen = pygame.display.set_mode((WIDTH, HEIGHT), screen_flags)
                 if aa_button.collidepoint(event.pos):
+                    if click_sound:
+                        click_sound.play()
                     game.antialias = not game.antialias
                 elif dm_button.collidepoint(event.pos):
+                    if click_sound:
+                        click_sound.play()
                     dark_mode = not dark_mode
                 if back_button.collidepoint(event.pos):
+                    if click_sound:
+                        click_sound.play()
                     save_settings(
                         res,
                         bool(screen_flags & pygame.FULLSCREEN),
