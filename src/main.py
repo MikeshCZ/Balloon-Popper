@@ -37,8 +37,7 @@ RED = (235, 0, 0)
 GREY = (180, 180, 180)
 
 # --- Zvuky ---
-
-CLICK_SOUND_FILE = "assets/menu-click.mp3"
+CLICK_SOUND_FILE = "assets/click.mp3"
 if os.path.exists(CLICK_SOUND_FILE):
     click_sound = pygame.mixer.Sound(CLICK_SOUND_FILE)
 else:
