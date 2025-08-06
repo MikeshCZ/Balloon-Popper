@@ -12,8 +12,7 @@ Jednoduchá hra vytvořená v Python pyGame pro ukázku možností OOP.
 2. Spusť hru:
 
    ```bash
-   cd src
-   python main.py
+   python3 src/main.py
    ```
 
 ## ⚙️ Funkce
@@ -29,8 +28,8 @@ Jednoduchá hra vytvořená v Python pyGame pro ukázku možností OOP.
 
 ## 💾 Ukládané soubory
 
-- `.highscore` – zakódované skóre
-- `settings.json` – uživatelské nastavení
+- `config/.highscore` – zakódované skóre
+- `config/settings.json` – uživatelské nastavení
 
 ## 🛠️ Vyžaduje
 

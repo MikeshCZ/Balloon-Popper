@@ -10,7 +10,7 @@ import json
 pygame.init()
 
 # --- Promenne ---
-VERSION = "0.2.0"
+VERSION = "0.2.1"
 RESOLUTIONS = {
     "HD": (1280, 720),
     "FullHD": (1920, 1080),
@@ -25,8 +25,8 @@ INITIAL_BALLOON_GROWTH = 0.3
 MAX_LIVES = 5
 FONT = pygame.font.SysFont("arial", 24)
 TITLE_FONT = pygame.font.SysFont("arial", 48, bold=True)
-HIGH_SCORE_FILE = ".highscore"
-SETTINGS_FILE = "settings.json"
+HIGH_SCORE_FILE = "config/.highscore"
+SETTINGS_FILE = "config/settings.json"
 BUTTON_WIDTH = 220
 BUTTON_HEIGHT = 30
 
