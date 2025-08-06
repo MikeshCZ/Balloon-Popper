@@ -10,7 +10,7 @@ import json
 pygame.init()
 
 # --- Promenne ---
-VERSION = "0.3.0"
+VERSION = "0.3.1"
 RESOLUTIONS = {
     "HD": (1280, 720),
     "FullHD": (1920, 1080),
